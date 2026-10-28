@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimeCardCalc - Free Time Card Calculator with Lunch Break</title>
+<meta name="description" content="Free Time Card Calculator with lunch break. Calculate work hours, overtime, total pay.">
+<style>
+:root{--bg:#0f1117;--card:#1a1e2b;--accent:#6c5ce7;--text:#fff;--muted:#a0a6b8;--border:#2a3042}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100vh}
+header{padding:20px;max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:26px;font-weight:800} .logo span{color:var(--accent)}
+.card{max-width:700px;margin:30px auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px}
+h1{font-size:28px;text-align:center;margin-bottom:6px} .sub{text-align:center;color:var(--muted);margin-bottom:24px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+label{color:var(--muted);font-size:13px;margin-bottom:6px;display:block}
+input{width:100%;padding:12px;background:#0f1117;border:1px solid var(--border);border-radius:10px;color:#fff;font-size:15px}
+input:focus{border-color:var(--accent);outline:none}
+.result{margin-top:20px;background:#0f1117;border-radius:12px;padding:18px;text-align:center;border:1px dashed var(--accent)}
+.result h2{font-size:36px;color:#6c5ce7}
+.btn{width:100%;margin-top:16px;padding:14px;background:var(--accent);border:none;border-radius:10px;color:#fff;font-weight:700;font-size:16px;cursor:pointer}
+.tools{max-width:1100px;margin:40px auto;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.tool{background:var(--card);border:1px solid var(--border);padding:16px;border-radius:12px}
+.tool b{display:block;margin-bottom:4px}
+footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="logo">TimeCard<span>Calc</span></div><div style="color:var(--muted)">Free Tools USA</div></header>
+
+<div class="card">
+<h1>Time Card Calculator</h1>
+<p class="sub">Calculate work hours with lunch break - Free & accurate</p>
+
+<div class="grid">
+<div><label>Clock In</label><input type="time" id="in" value="09:00"></div>
+<div><label>Clock Out</label><input type="time" id="out" value="17:00"></div>
+</div>
+<div class="grid">
+<div><label>Lunch Break (minutes)</label><input type="number" id="lunch" value="30"></div>
+<div><label>Hourly Rate $</label><input type="number" id="rate" value="20"></div>
+</div>
+
+<button class="btn" onclick="calc()">Calculate Hours</button>
+
+<div class="result">
+<h2 id="hours">7.5 Hours</h2>
+<p id="pay" style="color:var(--muted);margin-top:6px">Total Pay: $150.00 | Overtime: 0h</p>
+</div>
+</div>
+
+<div class="tools">
+<div class="tool"><b>📦 Compress to 20kb</b><span style="color:var(--muted);font-size:12px">Coming Soon</span></div>
+<div class="tool"><b>📶 QR Wifi Generator</b><span style="color:var(--muted);font-size:12px">Coming Soon</span></div>
+<div class="tool"><b>🎂 Age Calculator</b><span style="color:var(--muted);font-size:12px">Coming Soon</span></div>
+<div class="tool"><b>🔢 Word Counter</b><span style="color:var(--muted);font-size:12px">Coming Soon</span></div>
+</div>
+
+<footer>© 2026 TimeCardCalc - No login required</footer>
+
+<script>
+function calc(){
+ let i=document.getElementById('in').value, o=document.getElementById('out').value;
+ let lunch=parseInt(document.getElementById('lunch').value)||0;
+ let rate=parseFloat(document.getElementById('rate').value)||0;
+ if(!i||!o)return;
+ let [ih,im]=i.split(':').map(Number), [oh,om]=o.split(':').map(Number);
+ let start=ih*60+im, end=oh*60+om;
+ if(end<start) end+=24*60;
+ let total=end-start-lunch;
+ let h=(total/60).toFixed(2);
+ let overtime=Math.max(0,(total-480)/60).toFixed(2);
+ document.getElementById('hours').innerText=h+' Hours';
+ document.getElementById('pay').innerText=`Total Pay: $${(h*rate).toFixed(2)} | Overtime: ${overtime}h`;
+}
+calc();
+document.querySelectorAll('input').forEach(e=>e.addEventListener('change',calc));
+</script>
+</body>
+</html>
